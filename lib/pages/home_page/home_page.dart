@@ -1,25 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pokedex/consts/consts_app.dart';
 import 'package:pokedex/models/pokeapi.dart';
 import 'package:pokedex/pages/home_page/widgets/app_bar_home.dart';
 import 'package:pokedex/pages/home_page/widgets/poke_item.dart';
 import 'package:pokedex/pages/poke_detail/poke_detail_page.dart';
 import 'package:pokedex/stores/pokeapi_store.dart';
-import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
   PokeApiStore _pokemonStore;
 
   @override
-  Widget build(BuildContext context) {
-    _pokemonStore = Provider.of<PokeApiStore>(context);
-
+  void initState() {
+    super.initState();
+    _pokemonStore = GetIt.instance<PokeApiStore>();
     if(_pokemonStore.pokeAPI == null) {
       _pokemonStore.fetchPokemonList();
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     
     double screenWidth = MediaQuery.of(context).size.width;
     double statusWidth = MediaQuery.of(context).padding.top;
